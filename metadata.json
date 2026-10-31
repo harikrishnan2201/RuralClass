@@ -1,0 +1,8 @@
+{
+  "name": "RuralClass — Multi-Grade Classroom Planning",
+  "description": "Educational planning assistant for multi-grade rural schools, featuring concept bridge mapping, adaptive weekly scheduling, and low-cost learning activities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

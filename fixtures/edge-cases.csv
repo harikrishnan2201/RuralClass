@@ -1,0 +1,8 @@
+Roll Number,Student Name,Grade,Section,Score,Notes
+R999,,Class 3,A,75,Missing student name
+R101,Invalid Score Student,Class 4,B,150,Score over 100
+R102,Negative Score Student,Class 4,B,-20,Negative score
+R103,Text Score Student,Class 5,A,Absent,Score is text
+R104,Unknown Grade Student,Class 9,A,80,Grade outside 3-5
+R105,Duplicate Roll 1,Class 3,A,70,First with R105 in 3A
+R105,Duplicate Roll 2,Class 3,A,85,Second with R105 in 3A

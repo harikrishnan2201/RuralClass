@@ -1,0 +1,65 @@
+@import "@fontsource/noto-sans-tamil/400.css";
+@import "@fontsource/noto-sans-tamil/600.css";
+@import "@fontsource/noto-sans-tamil/700.css";
+@import "@fontsource/noto-sans-devanagari/400.css";
+@import "@fontsource/noto-sans-devanagari/600.css";
+@import "@fontsource/noto-sans-devanagari/700.css";
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  :root[lang="ta"] {
+    --font-sans: 'Noto Sans Tamil', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Noto Sans Tamil', system-ui, sans-serif;
+    line-height: 1.65;
+  }
+
+  :root[lang="hi"] {
+    --font-sans: 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Noto Sans Devanagari', system-ui, sans-serif;
+    line-height: 1.65;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #F7F8F5;
+    color: #202923;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Print-specific styles for A4 exports with Indic complex script support */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    font-size: 10.5pt !important;
+  }
+  :root[lang="ta"] body {
+    font-family: 'Noto Sans Tamil', sans-serif !important;
+  }
+  :root[lang="hi"] body {
+    font-family: 'Noto Sans Devanagari', sans-serif !important;
+  }
+  .print-page-break {
+    page-break-after: always;
+  }
+  @page {
+    margin: 10mm 12mm;
+    size: A4 portrait;
+  }
+}
