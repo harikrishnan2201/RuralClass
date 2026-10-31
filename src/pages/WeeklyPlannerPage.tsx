@@ -254,24 +254,24 @@ export const WeeklyPlannerPage: React.FC = () => {
       <div className="hidden print-only mb-6 border-b-2 border-black pb-4">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-2xl font-bold text-black uppercase tracking-tight">RuralClass Weekly Teaching Plan</h1>
+            <h1 className="text-2xl font-bold text-black uppercase tracking-tight">{t('planner.printTitle')}</h1>
             <p className="text-sm text-neutral-800 font-medium mt-1">
-              Classroom: {activePlan.classroomName} · Grades: {activePlan.gradesCovered.join(', ')}
+              {t('settings.schoolName')}: {activePlan.classroomName} · {t('common.grade')}: {activePlan.gradesCovered.map(g => localizeGrade(g, i18n.language)).join(', ')}
             </p>
             <p className="text-xs text-neutral-600 mt-0.5">
-              Week: {activePlan.weekLabel} · Total Hours: {activePlan.totalPlannedHours} hrs
+              {activePlan.weekLabel} · {t('planner.plannedHours')}: {activePlan.totalPlannedHours} hrs
             </p>
           </div>
           <div className="text-right">
             <span className="text-xs font-bold uppercase px-3 py-1 border border-black inline-block">
-              Status: {activePlan.status}
+              {activePlan.status}
             </span>
-            <p className="text-[10px] text-neutral-500 mt-1">Printed on {new Date().toLocaleDateString()}</p>
+            <p className="text-[10px] text-neutral-500 mt-1">{t('planner.printedOn', { date: new Date().toLocaleDateString() })}</p>
           </div>
         </div>
         {activePlan.notes && (
           <p className="text-xs text-neutral-700 italic mt-2 border-t pt-1">
-            Teacher Notes: {activePlan.notes}
+            {t('planner.teacherNotesLabel')}: {activePlan.notes}
           </p>
         )}
       </div>
@@ -280,7 +280,7 @@ export const WeeklyPlannerPage: React.FC = () => {
       <div className="no-print flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#E1E7E0]">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase tracking-wider text-[#68746B] font-semibold">Primary Working Area</span>
+            <span className="text-xs uppercase tracking-wider text-[#68746B] font-semibold">{t('planner.primaryWorkingArea')}</span>
             <span className="text-xs text-[#68746B]">·</span>
             <StatusBadge status={activePlan.status} />
           </div>
@@ -288,7 +288,7 @@ export const WeeklyPlannerPage: React.FC = () => {
             {activePlan.name}
           </h2>
           <p className="text-sm text-[#4A554E] mt-1">
-            One classroom. Multiple grades. A practical plan for everyone.
+            {t('planner.tagline')}
           </p>
         </div>
 
@@ -340,24 +340,24 @@ export const WeeklyPlannerPage: React.FC = () => {
             <span className="text-xs font-mono font-bold text-[#202923]">
               {totalPlannedHours} hrs
             </span>
-            <span className="text-xs text-[#68746B]">/ {maxAvailableHours} hrs available</span>
+            <span className="text-xs text-[#68746B]">{t('planner.hrsAvailable', { count: maxAvailableHours })}</span>
           </div>
 
           <div className="flex items-center gap-3">
             {isOverAllocated ? (
               <div className="flex items-center gap-2 text-xs text-[#C65C48] font-semibold">
                 <AlertTriangle className="w-3.5 h-3.5" />
-                <span>Exceeds capacity by {(totalPlannedHours - maxAvailableHours).toFixed(1)} hrs</span>
+                <span>{t('planner.exceedsCapacity', { hours: (totalPlannedHours - maxAvailableHours).toFixed(1) })}</span>
                 <button
                   onClick={handleRebalanceSchedule}
                   className="ml-2 text-[11px] underline hover:text-[#A63A26]"
                 >
-                  Rebalance Durations
+                  {t('planner.rebalanceDurations')}
                 </button>
               </div>
             ) : (
               <span className="text-xs text-[#245B4A] font-medium flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Within school capacity
+                <CheckCircle2 className="w-3.5 h-3.5" /> {t('planner.withinCapacity')}
               </span>
             )}
 

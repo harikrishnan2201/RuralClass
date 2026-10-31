@@ -20,19 +20,35 @@ import { setAppLanguage } from '../i18n/config';
 
 export const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [settings, setSettings] = useState<UserSettings>(Storage.getSettings());
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
+  const currentLang = (i18n.language?.startsWith('ta') ? 'ta' : i18n.language?.startsWith('hi') ? 'hi' : 'en') as 'en' | 'ta' | 'hi';
+
+  const handleLanguageSelect = (lang: 'en' | 'ta' | 'hi') => {
+    const langLabel = lang === 'ta' ? 'Tamil' : lang === 'hi' ? 'Hindi' : 'English';
+    const updatedSettings = { ...settings, preferredLanguage: langLabel };
+    setSettings(updatedSettings);
+    setAppLanguage(lang);
+    setSuccessToast(
+      lang === 'ta'
+        ? 'மொழி வெற்றிகரமாக மாற்றப்பட்டது (தமிழ்).'
+        : lang === 'hi'
+          ? 'भाषा सफलतापूर्वक बदल दी गई (हिन्दी)।'
+          : 'Language changed successfully to English.'
+    );
+    setTimeout(() => setSuccessToast(null), 3000);
+  };
+
   const handleLanguageChange = (val: string) => {
-    setSettings(prev => ({ ...prev, preferredLanguage: val }));
     if (val === 'Tamil' || val === 'ta') {
-      setAppLanguage('ta');
+      handleLanguageSelect('ta');
     } else if (val === 'Hindi' || val === 'hi') {
-      setAppLanguage('hi');
+      handleLanguageSelect('hi');
     } else {
-      setAppLanguage('en');
+      handleLanguageSelect('en');
     }
   };
 
@@ -102,7 +118,7 @@ export const SettingsPage: React.FC = () => {
                 onChange={(e) => setSettings({ ...settings, teacherName: e.target.value })}
                 className="w-full text-xs p-2.5 border border-[#E1E7E0] rounded-lg"
               />
-              <span className="text-[11px] text-[#68746B] mt-0.5 block">Generic fictional demo name</span>
+              <span className="text-[11px] text-[#68746B] mt-0.5 block">{t('settings.demoNameHint', 'Generic fictional demo name')}</span>
             </div>
 
             <div>
@@ -117,38 +133,109 @@ export const SettingsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Localization & Display */}
+        {/* Language Selection Section (Requirement 1 & 2) */}
         <div className="pt-4 border-t border-[#E1E7E0]">
-          <h3 className="text-sm font-bold text-[#202923] flex items-center gap-2 mb-3">
-            <Globe className="w-4 h-4 text-[#245B4A]" />
-            <span>{t('settings.language')}</span>
-          </h3>
+          <div className="flex items-center justify-between mb-1.5">
+            <h3 className="text-sm font-bold text-[#202923] flex items-center gap-2">
+              <Globe className="w-4 h-4 text-[#245B4A]" />
+              <span>{t('settings.languageSectionTitle', 'Language / மொழி / भाषा')}</span>
+            </h3>
+            <span className="text-[11px] font-semibold text-[#245B4A] bg-[#E6EFE8] px-2 py-0.5 rounded border border-[#C6DDD0]">
+              {currentLang === 'ta' ? 'தமிழ்' : currentLang === 'hi' ? 'हिन्दी' : 'English'}
+            </span>
+          </div>
+          <p className="text-xs text-[#4A554E] mb-3">
+            {t('settings.languageSubtitle', 'Choose your primary classroom language. The entire interface, multi-grade curriculum, and diagnostic plans update instantly without reloading.')}
+          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-[#202923] mb-1">{t('settings.language')}</label>
-              <select
-                value={settings.preferredLanguage}
-                onChange={(e) => handleLanguageChange(e.target.value)}
-                className="w-full text-xs p-2.5 border border-[#E1E7E0] rounded-lg bg-white"
-              >
-                <option value="English">English (English)</option>
-                <option value="Tamil">தமிழ் (Tamil)</option>
-                <option value="Hindi">हिन्दी (Hindi)</option>
-              </select>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Option 1: English */}
+            <button
+              type="button"
+              onClick={() => handleLanguageSelect('en')}
+              className={`p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
+                currentLang === 'en'
+                  ? 'border-[#245B4A] bg-[#F0F7F2] ring-2 ring-[#245B4A]/20 shadow-xs'
+                  : 'border-[#E1E7E0] bg-white hover:border-[#C6DDD0] hover:bg-[#FAFBF9]'
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-base font-bold text-[#202923]">English</div>
+                  <div className="text-xs text-[#68746B]">English</div>
+                </div>
+                {currentLang === 'en' && (
+                  <CheckCircle2 className="w-5 h-5 text-[#245B4A] shrink-0" />
+                )}
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#E1E7E0]/60 flex items-center justify-between text-[11px]">
+                <span className="text-[#68746B]">{t('settings.langEnglishTag', 'Standard English')}</span>
+                <span className="font-mono text-[10px] text-[#245B4A] font-bold">EN</span>
+              </div>
+            </button>
 
-            <div>
-              <label className="block text-xs font-semibold text-[#202923] mb-1">{t('settings.timeFormat')}</label>
-              <select
-                value={settings.timeFormat}
-                onChange={(e) => setSettings({ ...settings, timeFormat: e.target.value as any })}
-                className="w-full text-xs p-2.5 border border-[#E1E7E0] rounded-lg bg-white"
-              >
-                <option value="12-hour">12-Hour (e.g. 09:00 AM)</option>
-                <option value="24-hour">24-Hour (e.g. 09:00)</option>
-              </select>
-            </div>
+            {/* Option 2: Tamil */}
+            <button
+              type="button"
+              onClick={() => handleLanguageSelect('ta')}
+              className={`p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
+                currentLang === 'ta'
+                  ? 'border-[#245B4A] bg-[#F0F7F2] ring-2 ring-[#245B4A]/20 shadow-xs'
+                  : 'border-[#E1E7E0] bg-white hover:border-[#C6DDD0] hover:bg-[#FAFBF9]'
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-base font-bold text-[#202923]">தமிழ்</div>
+                  <div className="text-xs text-[#68746B]">Tamil</div>
+                </div>
+                {currentLang === 'ta' && (
+                  <CheckCircle2 className="w-5 h-5 text-[#245B4A] shrink-0" />
+                )}
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#E1E7E0]/60 flex items-center justify-between text-[11px]">
+                <span className="text-[#68746B]">{t('settings.langTamilTag', 'தமிழ்நாடு பாடத்திட்டம்')}</span>
+                <span className="font-mono text-[10px] text-[#245B4A] font-bold">TA</span>
+              </div>
+            </button>
+
+            {/* Option 3: Hindi */}
+            <button
+              type="button"
+              onClick={() => handleLanguageSelect('hi')}
+              className={`p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
+                currentLang === 'hi'
+                  ? 'border-[#245B4A] bg-[#F0F7F2] ring-2 ring-[#245B4A]/20 shadow-xs'
+                  : 'border-[#E1E7E0] bg-white hover:border-[#C6DDD0] hover:bg-[#FAFBF9]'
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-base font-bold text-[#202923]">हिन्दी</div>
+                  <div className="text-xs text-[#68746B]">Hindi</div>
+                </div>
+                {currentLang === 'hi' && (
+                  <CheckCircle2 className="w-5 h-5 text-[#245B4A] shrink-0" />
+                )}
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#E1E7E0]/60 flex items-center justify-between text-[11px]">
+                <span className="text-[#68746B]">{t('settings.langHindiTag', 'एनसीईआरटी पाठ्यक्रम')}</span>
+                <span className="font-mono text-[10px] text-[#245B4A] font-bold">HI</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Time Format */}
+          <div className="mt-4 max-w-xs">
+            <label className="block text-xs font-semibold text-[#202923] mb-1">{t('settings.timeFormat')}</label>
+            <select
+              value={settings.timeFormat}
+              onChange={(e) => setSettings({ ...settings, timeFormat: e.target.value as any })}
+              className="w-full text-xs p-2.5 border border-[#E1E7E0] rounded-lg bg-white"
+            >
+              <option value="12-hour">12-Hour (e.g. 09:00 AM)</option>
+              <option value="24-hour">24-Hour (e.g. 09:00)</option>
+            </select>
           </div>
         </div>
 
@@ -239,7 +326,7 @@ export const SettingsPage: React.FC = () => {
       <ConfirmationModal
         isOpen={isResetModalOpen}
         title={t('settings.resetAll')}
-        description="This will restore all topics, sample understanding levels, classroom inventory, and approved plans back to the default demo state. Any custom topics or edits will be reset."
+        description={t('settings.resetModalDesc', 'This will restore all topics, sample understanding levels, classroom inventory, and approved plans back to the default demo state. Any custom topics or edits will be reset.')}
         confirmLabel={t('settings.resetAll')}
         isDestructive
         onConfirm={handleConfirmReset}

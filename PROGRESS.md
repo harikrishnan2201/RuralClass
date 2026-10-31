@@ -25,13 +25,15 @@
 | Frontend write-through Storage & offline queue | Phase 1 | **DONE** | `src/lib/storage.ts` | Synchronous cache, API write-through, localStorage offline queue. |
 | Security: Helmet, rate limit, CORS, passcode, logging | Phase 1 | **DONE** | `server.ts`, `src/server/middleware/*` | Helmet, pino logger, signed cookies for optional passcode. |
 | Supertest API integration tests | Phase 1 | **DONE** | `src/server/__tests__/api.test.ts` | 19 integration tests passing. |
-| react-i18next setup with En, Ta, Hi locales | Phase 2 | **DONE** | `src/i18n/config.ts`, `src/locales/*.json` | 12 namespaces, 232 keys each with 100% parity verified. |
+| react-i18next setup with En, Ta, Hi locales | Phase 2 | **DONE** | `src/i18n/config.ts`, `src/locales/*.json` | 12 namespaces, 301 keys each with 100% parity verified. |
 | Language switcher in Navbar & HTML lang sync | Phase 2 | **DONE** | `src/components/layout/Navbar.tsx` | Instant UI language switching with persistence. |
-| Dynamic curriculum & session title localization | Phase 2 | **DONE** | `src/shared/contentLocalization.ts` | Maps grades, topics, sessions to Tamil and Hindi. |
+| Dedicated Language selector in Settings Page | Phase 2 | **DONE** | `src/pages/SettingsPage.tsx` | Prominent 3-option card selection (English, தமிழ், हिन्दी) with instant reload-free switching and dual persistence (localStorage + server settings). |
+| Dynamic curriculum & session title localization | Phase 2 | **DONE** | `src/shared/contentLocalization.ts` | Maps grades, topics, sessions, concept nodes, activities, and low-cost village resources to Tamil and Hindi. |
 | Bundled Noto Sans Tamil & Devanagari fonts | Phase 2 | **DONE** | `src/index.css`, `package.json` | Bundled fontsource fonts for offline Indic typography. |
 | Multilingual AI endpoints & fallbacks | Phase 2 | **DONE** | `src/server/routes/ai.ts` | Prompts Gemini in chosen language; full Ta/Hi fallbacks. |
-| UI pages translation integration | Phase 2 | **DONE** | `src/pages/*.tsx` | All 8 pages localized with translation keys. |
+| UI pages translation integration | Phase 2 | **DONE** | `src/pages/*.tsx` | All 8 pages and shared components localized with zero remaining hardcoded text. |
 | Multilingual completeness unit tests | Phase 2 | **DONE** | `src/lib/__tests__/i18n.test.ts` | 6 Vitest tests passing. |
+| Screenshots in Tamil and Hindi | Phase 2 | **DONE** | `docs/screenshots/*` | Full visual proof of all routes in both Tamil and Hindi under `docs/screenshots/`. |
 | Optional Section field on Student | Phase 3 | **DONE** | `src/types/index.ts`, `src/server/db/migrator.ts`, `src/pages/StudentRecordsPage.tsx` | Composite identity `grade + section + rollNo`. Hidden filter when sections unused. |
 | Schema-driven Import Registry | Phase 3 | **DONE** | `src/shared/importRegistry.ts` | Indic digit normalization (`௧-௯`, `१-९`), fractional score normalization (`7/10`, `85%`), section extraction. |
 | Multi-format File Parsers (Excel, CSV, DOCX, Photo) | Phase 3 | **DONE** | `src/server/services/fileParser.ts`, `src/server/services/excelParser.ts`, `src/server/services/geminiMultimodalParser.ts` | In-memory parsing, magic byte validation, 2000 row cap, formula injection defense. |

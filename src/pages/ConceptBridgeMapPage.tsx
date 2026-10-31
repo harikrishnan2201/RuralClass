@@ -22,7 +22,7 @@ import {
 import { Storage } from '../lib/storage';
 import { ConceptNode, ClassroomConfig } from '../types';
 import { StatusBadge } from '../components/common/StatusBadge';
-import { localizeGrade, localizeTopicName } from '../shared/contentLocalization';
+import { localizeGrade, localizeTopicName, localizeConceptNode } from '../shared/contentLocalization';
 
 export const ConceptBridgeMapPage: React.FC = () => {
   const navigate = useNavigate();
@@ -114,7 +114,7 @@ export const ConceptBridgeMapPage: React.FC = () => {
 
         {/* Legend */}
         <div className="flex flex-wrap items-center gap-3 bg-white px-3.5 py-2 rounded-lg border border-[#E1E7E0] text-xs shadow-2xs">
-          <span className="font-semibold text-[#202923]">Legend:</span>
+          <span className="font-semibold text-[#202923]">{t('bridge.legend')}:</span>
           <div className="flex items-center gap-1.5 text-[#C65C48]">
             <span className="w-2.5 h-2.5 rounded-full bg-[#C65C48]"></span>
             <span>{t('common.statusNeedsAttention')} (&lt;50%)</span>
@@ -139,7 +139,7 @@ export const ConceptBridgeMapPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="text-xs font-semibold text-[#4A554E] flex items-center gap-1.5">
                 <Filter className="w-3.5 h-3.5 text-[#245B4A]" />
-                <span>Filter Grade:</span>
+                <span>{t('bridge.filterGrade')}</span>
               </span>
               <div className="flex items-center gap-1 bg-white p-0.5 rounded-md border border-[#E1E7E0]">
                 {['All', 'Class 3', 'Class 4', 'Class 5'].map(g => (
@@ -152,7 +152,7 @@ export const ConceptBridgeMapPage: React.FC = () => {
                         : 'text-[#68746B] hover:text-[#202923]'
                     }`}
                   >
-                    {g}
+                    {g === 'All' ? t('common.all') : localizeGrade(g, i18n.language)}
                   </button>
                 ))}
               </div>
@@ -163,7 +163,7 @@ export const ConceptBridgeMapPage: React.FC = () => {
               <button
                 onClick={handleZoomIn}
                 className="p-1 text-[#4A554E] hover:text-[#202923] hover:bg-[#F2F6F3] rounded"
-                title="Zoom In"
+                title={t('bridge.zoomIn')}
               >
                 <ZoomIn className="w-4 h-4" />
               </button>
@@ -173,7 +173,7 @@ export const ConceptBridgeMapPage: React.FC = () => {
               <button
                 onClick={handleZoomOut}
                 className="p-1 text-[#4A554E] hover:text-[#202923] hover:bg-[#F2F6F3] rounded"
-                title="Zoom Out"
+                title={t('bridge.zoomOut')}
               >
                 <ZoomOut className="w-4 h-4" />
               </button>
@@ -181,7 +181,7 @@ export const ConceptBridgeMapPage: React.FC = () => {
               <button
                 onClick={handleReset}
                 className="p-1 text-[#4A554E] hover:text-[#202923] hover:bg-[#F2F6F3] rounded"
-                title="Reset View"
+                title={t('bridge.resetView')}
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
@@ -415,17 +415,17 @@ export const ConceptBridgeMapPage: React.FC = () => {
                     {/* Relationship Badge Tooltips for Parents/Children */}
                     {isParentOfSelected && (
                       <g transform="translate(0, -18)">
-                        <rect x="0" y="0" width="105" height="15" rx="3" fill="#245B4A" />
+                        <rect x="0" y="0" width="115" height="15" rx="3" fill="#245B4A" />
                         <text x="5" y="11" fontSize="8.5" fill="#FFFFFF" fontWeight="bold">
-                          ▲ Prerequisite Root
+                          {t('bridge.nodePrereqRoot')}
                         </text>
                       </g>
                     )}
                     {isChildOfSelected && (
                       <g transform="translate(85, -18)">
-                        <rect x="0" y="0" width="105" height="15" rx="3" fill="#D97706" />
+                        <rect x="0" y="0" width="115" height="15" rx="3" fill="#D97706" />
                         <text x="5" y="11" fontSize="8.5" fill="#FFFFFF" fontWeight="bold">
-                          ▼ Downstream Concept
+                          {t('bridge.nodeDownstream')}
                         </text>
                       </g>
                     )}
@@ -439,110 +439,119 @@ export const ConceptBridgeMapPage: React.FC = () => {
           <div className="p-3 bg-[#FAFBF9] border-t border-[#E1E7E0] text-xs text-[#68746B] flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-[#245B4A]" />
-              <span>Click any node to reveal the root cause behind cross-grade learning barriers.</span>
+              <span>{t('bridge.clickNodeGuidance')}</span>
             </div>
-            <span className="font-mono text-[11px]">{visibleNodes.length} Concepts Mapped</span>
+            <span className="font-mono text-[11px]">{t('bridge.allConceptsMapped', { count: visibleNodes.length })}</span>
           </div>
         </div>
 
         {/* Selected Concept Deep-Dive Drawer (4 cols on desktop) */}
         <div className="lg:col-span-4 space-y-4">
-          {selectedNode ? (
-            <div className="bg-white rounded-xl border border-[#E1E7E0] shadow-2xs overflow-hidden">
-              {/* Drawer Header */}
-              <div className="p-4 bg-[#FAFBF9] border-b border-[#E1E7E0]">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-[#68746B]">
-                    Concept Bridge Node
-                  </span>
-                  <StatusBadge level={selectedNode.understandingLevel} />
-                </div>
-                <h3 className="text-base font-bold text-[#202923] mt-1.5 leading-snug">
-                  {localizeTopicName(selectedNode.name, i18n.language)}
-                </h3>
-                <p className="text-xs text-[#245B4A] font-semibold mt-0.5">
-                  {localizeGrade(selectedNode.grade, i18n.language)} · {selectedNode.category}
-                </p>
-              </div>
-
-              {/* Drawer Body */}
-              <div className="p-5 space-y-4">
-                {/* Description */}
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A554E] mb-1">
-                    Concept Definition
-                  </h4>
-                  <p className="text-xs text-[#4A554E] leading-relaxed">
-                    {selectedNode.description}
-                  </p>
-                </div>
-
-                {/* Why Connection Matters (The Educational Insight) */}
-                <div className="p-3.5 bg-[#FAFBF9] rounded-lg border border-[#E1E7E0] space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#202923]">
-                    <GitMerge className="w-3.5 h-3.5 text-[#245B4A]" />
-                    <span>Cross-Grade Bridge Significance</span>
+          {selectedNode ? (() => {
+            const node = localizeConceptNode(selectedNode, i18n.language);
+            return (
+              <div className="bg-white rounded-xl border border-[#E1E7E0] shadow-2xs overflow-hidden">
+                {/* Drawer Header */}
+                <div className="p-4 bg-[#FAFBF9] border-b border-[#E1E7E0]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#68746B]">
+                      {t('bridge.conceptNode')}
+                    </span>
+                    <StatusBadge level={node.understandingLevel} />
                   </div>
-                  <p className="text-xs text-[#4A554E] leading-relaxed">
-                    {selectedNode.rootCauseContext}
+                  <h3 className="text-base font-bold text-[#202923] mt-1.5 leading-snug">
+                    {node.name}
+                  </h3>
+                  <p className="text-xs text-[#245B4A] font-semibold mt-0.5">
+                    {localizeGrade(node.grade, i18n.language)} · {node.category}
                   </p>
                 </div>
 
-                {/* Prerequisite & Downstream Linkages */}
-                <div className="space-y-2 pt-2 border-t border-[#E1E7E0]">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A554E]">
-                    Connected Concepts
-                  </h4>
+                {/* Drawer Body */}
+                <div className="p-5 space-y-4">
+                  {/* Description */}
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A554E] mb-1">
+                      {t('bridge.conceptDefinition')}
+                    </h4>
+                    <p className="text-xs text-[#4A554E] leading-relaxed">
+                      {node.description}
+                    </p>
+                  </div>
 
-                  <div className="space-y-1 text-xs">
-                    <div className="flex items-start gap-1.5">
-                      <span className="font-semibold text-[#68746B] min-w-24">Prerequisites:</span>
-                      <span className="text-[#202923]">
-                        {selectedNode.prerequisites.length > 0
-                          ? selectedNode.prerequisites.map(pid => nodes.find(n => n.id === pid)?.name).join(', ')
-                          : 'Foundational entry point (No earlier pre-requisite in this map)'}
-                      </span>
+                  {/* Why Connection Matters (The Educational Insight) */}
+                  <div className="p-3.5 bg-[#FAFBF9] rounded-lg border border-[#E1E7E0] space-y-1.5">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#202923]">
+                      <GitMerge className="w-3.5 h-3.5 text-[#245B4A]" />
+                      <span>{t('bridge.bridgeSignificance')}</span>
                     </div>
+                    <p className="text-xs text-[#4A554E] leading-relaxed">
+                      {node.rootCauseContext}
+                    </p>
+                  </div>
 
-                    <div className="flex items-start gap-1.5">
-                      <span className="font-semibold text-[#68746B] min-w-24">Downstream:</span>
-                      <span className="text-[#202923]">
-                        {selectedNode.nextConcepts.length > 0
-                          ? selectedNode.nextConcepts.map(nid => nodes.find(n => n.id === nid)?.name).join(', ')
-                          : 'Culminating concept in this bridge model'}
-                      </span>
+                  {/* Prerequisite & Downstream Linkages */}
+                  <div className="space-y-2 pt-2 border-t border-[#E1E7E0]">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A554E]">
+                      {t('bridge.connectedConcepts')}
+                    </h4>
+
+                    <div className="space-y-1 text-xs">
+                      <div className="flex items-start gap-1.5">
+                        <span className="font-semibold text-[#68746B] min-w-24">{t('bridge.prerequisitesLabel')}</span>
+                        <span className="text-[#202923]">
+                          {node.prerequisites.length > 0
+                            ? node.prerequisites.map(pid => {
+                                const found = nodes.find(n => n.id === pid);
+                                return found ? localizeTopicName(found.name, i18n.language) : pid;
+                              }).join(', ')
+                            : t('bridge.noPrereqFoundational')}
+                        </span>
+                      </div>
+
+                      <div className="flex items-start gap-1.5">
+                        <span className="font-semibold text-[#68746B] min-w-24">{t('bridge.downstreamLabel')}</span>
+                        <span className="text-[#202923]">
+                          {node.nextConcepts.length > 0
+                            ? node.nextConcepts.map(nid => {
+                                const found = nodes.find(n => n.id === nid);
+                                return found ? localizeTopicName(found.name, i18n.language) : nid;
+                              }).join(', ')
+                            : t('bridge.culminatingConcept')}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Suggested Teaching Action */}
-                <div className="pt-2 border-t border-[#E1E7E0] space-y-1.5">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A554E]">
-                    Suggested Multi-Grade Action
-                  </h4>
-                  <p className="text-xs text-[#245B4A] font-medium leading-relaxed bg-[#F2F6F3] p-2.5 rounded-lg border border-[#C6DDD0]">
-                    {selectedNode.suggestedAction}
-                  </p>
-                </div>
+                  {/* Suggested Teaching Action */}
+                  <div className="pt-2 border-t border-[#E1E7E0] space-y-1.5">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A554E]">
+                      {t('bridge.suggestedMultiGradeAction')}
+                    </h4>
+                    <p className="text-xs text-[#245B4A] font-medium leading-relaxed bg-[#F2F6F3] p-2.5 rounded-lg border border-[#C6DDD0]">
+                      {node.suggestedAction}
+                    </p>
+                  </div>
 
-                {/* Primary Action Button: "Create a Lesson From This Gap" */}
-                <div className="pt-3 border-t border-[#E1E7E0]">
-                  <button
-                    onClick={handleCreateLesson}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-[#245B4A] hover:bg-[#194738] rounded-lg shadow-xs transition-colors"
-                  >
-                    <CalendarPlus className="w-4 h-4" />
-                    <span>{t('bridge.createLesson')}</span>
-                  </button>
-                  <p className="text-[11px] text-center text-[#68746B] mt-1.5">
-                    Transfers this concept into the Weekly Planner with differentiated grade tasks.
-                  </p>
+                  {/* Primary Action Button: "Create a Lesson From This Gap" */}
+                  <div className="pt-3 border-t border-[#E1E7E0]">
+                    <button
+                      onClick={handleCreateLesson}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-[#245B4A] hover:bg-[#194738] rounded-lg shadow-xs transition-colors"
+                    >
+                      <CalendarPlus className="w-4 h-4" />
+                      <span>{t('bridge.createLesson')}</span>
+                    </button>
+                    <p className="text-[11px] text-center text-[#68746B] mt-1.5">
+                      {t('bridge.transferToPlannerDesc')}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
+            );
+          })() : (
             <div className="p-8 text-center bg-white rounded-xl border border-[#E1E7E0] text-xs text-[#68746B]">
-              Select a node on the map to explore prerequisite foundations and generate a bridge lesson.
+              {t('bridge.selectNodePrompt')}
             </div>
           )}
 
@@ -550,10 +559,10 @@ export const ConceptBridgeMapPage: React.FC = () => {
           <div className="p-4 bg-[#FAFBF9] rounded-xl border border-[#E1E7E0] text-xs text-[#4A554E] space-y-2">
             <h4 className="font-bold text-[#202923] flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#D97706]" />
-              <span>Multi-Grade Teaching Tip</span>
+              <span>{t('bridge.multiGradeTeachingTip')}</span>
             </h4>
             <p className="text-[11px] text-[#68746B] leading-relaxed">
-              When Class 5 struggles with Decimals (42%), reteaching the decimal formula often fails. The Concept Bridge Map proves the root breakdown happened in Class 3's equal partition intuition. Launching a Monday paper-folding lesson serves all three grades at once.
+              {t('bridge.teachingTipText')}
             </p>
           </div>
         </div>

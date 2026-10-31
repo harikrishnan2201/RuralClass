@@ -14,17 +14,38 @@ import { AIAssistantPage } from './pages/AIAssistantPage';
 import { ImportWizardPage } from './pages/ImportWizardPage';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { Storage } from './lib/storage';
+import { setAppLanguage, getSavedAppLanguage } from './i18n/config';
 
 export default function App() {
   const [isInitializing, setIsInitializing] = useState(!Storage.isInitialized());
 
   useEffect(() => {
     let mounted = true;
-    Storage.initialize().finally(() => {
-      if (mounted) {
-        setIsInitializing(false);
-      }
-    });
+    Storage.initialize()
+      .then(() => {
+        // If localStorage didn't have an explicit language but server settings does, sync it
+        try {
+          const direct = localStorage.getItem('ruralclass_language');
+          if (!direct) {
+            const settings = Storage.getSettings();
+            if (settings?.preferredLanguage) {
+              const langCode = (settings.preferredLanguage === 'Tamil' || settings.preferredLanguage === 'ta')
+                ? 'ta'
+                : (settings.preferredLanguage === 'Hindi' || settings.preferredLanguage === 'hi')
+                  ? 'hi'
+                  : 'en';
+              setAppLanguage(langCode);
+            }
+          }
+        } catch {
+          // ignore
+        }
+      })
+      .finally(() => {
+        if (mounted) {
+          setIsInitializing(false);
+        }
+      });
     return () => {
       mounted = false;
     };

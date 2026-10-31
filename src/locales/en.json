@@ -32,6 +32,9 @@
     "sourceAi": "AI",
     "sourceBuiltin": "Built-in",
     "sourceBuiltinDesc": "Built-in pedagogical fallback engine",
+    "justNow": "Just now",
+    "allDurations": "All Durations",
+    "allMaterials": "All Materials",
     "statusApproved": "Approved",
     "statusGenerated": "Generated",
     "statusDraft": "Draft",
@@ -109,7 +112,10 @@
       "totalStudents": "Total Students",
       "weakTopics": "Priority Gaps (<55%)",
       "averageMastery": "Classroom Mastery"
-    }
+    },
+    "periodsCount": "{{count}} periods",
+    "priorityGapsTitle": "Priority Learning Gaps Across Grades",
+    "priorityGapsSubtitle": "Root causes identified across multi-grade classroom continuum"
   },
   "students": {
     "title": "Student Records & Progress Tracker",
@@ -185,7 +191,20 @@
     "views": {
       "weeklyOverview": "Weekly Overview",
       "dailyDetail": "Daily Detail"
-    }
+    },
+    "primaryWorkingArea": "Primary Working Area",
+    "tagline": "One classroom. Multiple grades. A practical plan for everyone.",
+    "withinCapacity": "Within school capacity",
+    "exceedsCapacity": "Exceeds capacity by {{hours}} hrs",
+    "rebalanceDurations": "Rebalance Durations",
+    "hrsAvailable": "/ {{count}} hrs available",
+    "printTitle": "RuralClass Weekly Teaching Plan",
+    "printedOn": "Printed on {{date}}",
+    "teacherNotesLabel": "Teacher Notes",
+    "planApprovedToast": "Plan officially marked as Approved by Teacher!",
+    "planRebalancedToast": "Schedule durations rebalanced to fit within teaching hours.",
+    "sessionUpdatedToast": "Session updated successfully.",
+    "sessionRemovedToast": "Session removed from weekly plan."
   },
   "bridge": {
     "title": "Concept Bridge Map",
@@ -200,7 +219,26 @@
       "foundation": "Foundation (Class 3)",
       "application": "Application (Class 4)",
       "synthesis": "Synthesis (Class 5)"
-    }
+    },
+    "legend": "Legend",
+    "filterGrade": "Filter Grade:",
+    "allConceptsMapped": "{{count}} Concepts Mapped",
+    "clickNodeGuidance": "Click any node to reveal the root cause behind cross-grade learning barriers.",
+    "nodePrereqRoot": "▲ Prerequisite Root",
+    "nodeDownstream": "▼ Downstream Concept",
+    "conceptNode": "Concept Bridge Node",
+    "conceptDefinition": "Concept Definition",
+    "bridgeSignificance": "Cross-Grade Bridge Significance",
+    "connectedConcepts": "Connected Concepts",
+    "prerequisitesLabel": "Prerequisites:",
+    "downstreamLabel": "Downstream:",
+    "noPrereqFoundational": "Foundational entry point (No earlier pre-requisite in this map)",
+    "culminatingConcept": "Culminating concept in this bridge model",
+    "suggestedMultiGradeAction": "Suggested Multi-Grade Action",
+    "transferToPlannerDesc": "Transfers this concept into the Weekly Planner with differentiated grade tasks.",
+    "selectNodePrompt": "Select a node on the map to explore prerequisite foundations and generate a bridge lesson.",
+    "multiGradeTeachingTip": "Multi-Grade Teaching Tip",
+    "teachingTipText": "When Class 5 struggles with Decimals (42%), reteaching the decimal formula often fails. The Concept Bridge Map proves the root breakdown happened in Class 3's equal partition intuition. Launching a Monday paper-folding lesson serves all three grades at once."
   },
   "activities": {
     "title": "Low-Cost Classroom Activities",
@@ -215,7 +253,30 @@
       "peerLearning": "Peer Learning",
       "visualModel": "Visual Model",
       "formativeCheck": "Formative Check"
-    }
+    },
+    "filterActive": "Classroom Materials Filter Active",
+    "searchPlaceholder": "Search activities, concepts, or materials (e.g. pebbles, paper, multiplication)...",
+    "onlyInventoryMaterials": "Only activities matching school inventory",
+    "filterBy": "Filter by:",
+    "durationQuick": "Quick (≤20 min)",
+    "durationStandard": "Standard (25–30 min)",
+    "durationExtended": "Extended (>30 min)",
+    "materialPaper": "Paper",
+    "materialPebbles": "Pebbles / Stones",
+    "materialBottleCaps": "Bottle caps",
+    "materialSticks": "Sticks",
+    "materialChalk": "Chalk & Blackboard",
+    "showingActivitiesCount": "Showing {{filtered}} of {{total}} activities",
+    "requiredLowCostMaterials": "Required Low-Cost Materials",
+    "differentiatedAdaptations": "Differentiated Grade Adaptations",
+    "stepByStepGuide": "Step-by-Step Classroom Guide",
+    "testedInRuralSchools": "Tested in multi-grade rural schools",
+    "addToWeeklyPlan": "Add to Weekly Plan",
+    "scheduleActivity": "Schedule Activity",
+    "selectSchoolDay": "Select School Day",
+    "timeSlotApprox": "Time Slot (approximate)",
+    "scheduleModalNote": "This activity will be added as a differentiated session on {{day}} with tasks populated for {{grades}}.",
+    "confirmAndAdd": "Confirm & Add"
   },
   "gaps": {
     "title": "Learning Gap Analysis",
@@ -241,7 +302,15 @@
     "savePreferences": "Save Preferences",
     "resetAll": "Reset All Demo Data",
     "resetSuccess": "All application data and settings reset to initial demo state.",
-    "saveSuccess": "Settings saved successfully."
+    "saveSuccess": "Settings saved successfully.",
+    "languageSectionTitle": "Language / மொழி / भाषा",
+    "languageSubtitle": "Choose your primary classroom language. The entire interface, multi-grade curriculum, and diagnostic plans update instantly without reloading.",
+    "languageChangedToast": "Language updated successfully.",
+    "langEnglishTag": "Standard English",
+    "langTamilTag": "தமிழ்நாடு பாடத்திட்டம்",
+    "langHindiTag": "एनसीईआरटी पाठ्यक्रम",
+    "demoNameHint": "Generic fictional demo name",
+    "resetModalDesc": "This will restore all topics, sample understanding levels, classroom inventory, and approved plans back to the default demo state. Any custom topics or edits will be reset."
   },
   "ai": {
     "title": "RuralClass AI Planning Coach",

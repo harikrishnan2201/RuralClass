@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Storage } from '../lib/storage';
 import { Activity, ClassroomConfig, WeeklyPlan, LessonSession } from '../types';
-import { localizeGrade } from '../shared/contentLocalization';
+import { localizeGrade, localizeActivity, localizeResource } from '../shared/contentLocalization';
 
 export const ActivitiesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -149,7 +149,7 @@ export const ActivitiesPage: React.FC = () => {
           </button>
           <div className="flex items-center gap-2 text-xs text-[#245B4A] bg-[#E6EFE8] px-3 py-1.5 rounded-lg border border-[#C6DDD0] font-medium">
             <PackageCheck className="w-4 h-4" />
-            <span>Classroom Materials Filter Active</span>
+            <span>{t('activities.filterActive')}</span>
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@ export const ActivitiesPage: React.FC = () => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search activities, concepts, or materials (e.g. pebbles, paper, multiplication)..."
+              placeholder={t('activities.searchPlaceholder')}
               className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-[#E1E7E0] rounded-lg focus:outline-hidden focus:ring-1 focus:ring-[#245B4A]"
             />
           </div>
@@ -177,13 +177,13 @@ export const ActivitiesPage: React.FC = () => {
               onChange={(e) => setOnlyAvailableResources(e.target.checked)}
               className="accent-[#245B4A] w-4 h-4"
             />
-            <span>Only activities matching school inventory</span>
+            <span>{t('activities.onlyInventoryMaterials')}</span>
           </label>
         </div>
 
         {/* Filter Dropdowns */}
         <div className="flex flex-wrap items-center gap-2.5 pt-2 border-t border-[#F0F4F1]">
-          <span className="text-xs text-[#68746B] font-medium">Filter by:</span>
+          <span className="text-xs text-[#68746B] font-medium">{t('activities.filterBy')}</span>
 
           {/* Grade */}
           <select
@@ -203,10 +203,10 @@ export const ActivitiesPage: React.FC = () => {
             onChange={(e) => setSelectedDuration(e.target.value)}
             className="text-xs bg-white border border-[#E1E7E0] rounded-md px-2.5 py-1 text-[#202923]"
           >
-            <option value="All">All Durations</option>
-            <option value="Short">Quick (&le;20 min)</option>
-            <option value="Medium">Standard (25–30 min)</option>
-            <option value="Long">Extended (&gt;30 min)</option>
+            <option value="All">{t('common.allDurations')}</option>
+            <option value="Short">{t('activities.durationQuick')}</option>
+            <option value="Medium">{t('activities.durationStandard')}</option>
+            <option value="Long">{t('activities.durationExtended')}</option>
           </select>
 
           {/* Material */}
@@ -215,110 +215,113 @@ export const ActivitiesPage: React.FC = () => {
             onChange={(e) => setSelectedMaterial(e.target.value)}
             className="text-xs bg-white border border-[#E1E7E0] rounded-md px-2.5 py-1 text-[#202923]"
           >
-            <option value="All">All Materials</option>
-            <option value="Paper">Paper</option>
-            <option value="Pebbles">Pebbles / Stones</option>
-            <option value="Bottle caps">Bottle caps</option>
-            <option value="Sticks">Sticks</option>
-            <option value="Chalk">Chalk & Blackboard</option>
+            <option value="All">{t('common.allMaterials')}</option>
+            <option value="Paper">{t('activities.materialPaper')}</option>
+            <option value="Pebbles">{t('activities.materialPebbles')}</option>
+            <option value="Bottle caps">{t('activities.materialBottleCaps')}</option>
+            <option value="Sticks">{t('activities.materialSticks')}</option>
+            <option value="Chalk">{t('activities.materialChalk')}</option>
           </select>
 
           <span className="text-[11px] text-[#68746B] ml-auto">
-            Showing {filteredActivities.length} of {activities.length} activities
+            {t('activities.showingActivitiesCount', { filtered: filteredActivities.length, total: activities.length })}
           </span>
         </div>
       </div>
 
       {/* Activities Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {filteredActivities.map((activity) => (
-          <div
-            key={activity.id}
-            className="bg-white rounded-xl border border-[#E1E7E0] shadow-2xs hover:border-[#245B4A]/50 transition-all flex flex-col justify-between overflow-hidden"
-          >
-            {/* Top Details */}
-            <div className="p-5 space-y-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#245B4A]">
-                    <span>{activity.grades.join(', ')}</span>
-                    <span>·</span>
-                    <span className="text-[#68746B]">{activity.category}</span>
-                  </div>
-                  <h3 className="text-base font-bold text-[#202923] mt-0.5 leading-snug">
-                    {activity.title}
-                  </h3>
-                </div>
-
-                <div className="flex items-center gap-1 text-xs font-mono font-medium text-[#68746B] bg-[#FAFBF9] px-2 py-1 rounded border border-[#E1E7E0] shrink-0">
-                  <Clock className="w-3.5 h-3.5 text-[#245B4A]" />
-                  <span>{activity.durationMinutes}m</span>
-                </div>
-              </div>
-
-              {/* Objective */}
-              <p className="text-xs text-[#4A554E] leading-relaxed">
-                {activity.objective}
-              </p>
-
-              {/* Required Materials */}
-              <div className="p-2.5 rounded-lg bg-[#FAFBF9] border border-[#E1E7E0] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#68746B]">
-                  Required Low-Cost Materials
-                </span>
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {activity.requiredMaterials.map(mat => (
-                    <span
-                      key={mat}
-                      className="text-[11px] px-2 py-0.5 rounded bg-white border border-[#E1E7E0] text-[#202923] font-medium"
-                    >
-                      {mat}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Multi-Grade Adaptations Accordion/Preview */}
-              <div className="space-y-1.5 pt-2 border-t border-[#F0F4F1]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#68746B]">
-                  Differentiated Grade Adaptations
-                </span>
-                <div className="space-y-1.5 text-xs">
-                  {activity.adaptations.map((adapt) => (
-                    <div key={adapt.grade} className="flex items-start gap-1.5">
-                      <span className="font-bold text-[#245B4A] min-w-14">{adapt.grade}:</span>
-                      <span className="text-[#4A554E] text-[11px] leading-relaxed">{adapt.instruction}</span>
+        {filteredActivities.map((rawActivity) => {
+          const activity = localizeActivity(rawActivity, i18n.language);
+          return (
+            <div
+              key={activity.id}
+              className="bg-white rounded-xl border border-[#E1E7E0] shadow-2xs hover:border-[#245B4A]/50 transition-all flex flex-col justify-between overflow-hidden"
+            >
+              {/* Top Details */}
+              <div className="p-5 space-y-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-semibold text-[#245B4A]">
+                      <span>{activity.grades.map(g => localizeGrade(g, i18n.language)).join(', ')}</span>
+                      <span>·</span>
+                      <span className="text-[#68746B]">{activity.category}</span>
                     </div>
-                  ))}
+                    <h3 className="text-base font-bold text-[#202923] mt-0.5 leading-snug">
+                      {activity.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-xs font-mono font-medium text-[#68746B] bg-[#FAFBF9] px-2 py-1 rounded border border-[#E1E7E0] shrink-0">
+                    <Clock className="w-3.5 h-3.5 text-[#245B4A]" />
+                    <span>{activity.durationMinutes}m</span>
+                  </div>
+                </div>
+
+                {/* Objective */}
+                <p className="text-xs text-[#4A554E] leading-relaxed">
+                  {activity.objective}
+                </p>
+
+                {/* Required Materials */}
+                <div className="p-2.5 rounded-lg bg-[#FAFBF9] border border-[#E1E7E0] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#68746B]">
+                    {t('activities.requiredLowCostMaterials')}
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    {activity.requiredMaterials.map(mat => (
+                      <span
+                        key={mat}
+                        className="text-[11px] px-2 py-0.5 rounded bg-white border border-[#E1E7E0] text-[#202923] font-medium"
+                      >
+                        {mat}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Multi-Grade Adaptations Accordion/Preview */}
+                <div className="space-y-1.5 pt-2 border-t border-[#F0F4F1]">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#68746B]">
+                    {t('activities.differentiatedAdaptations')}
+                  </span>
+                  <div className="space-y-1.5 text-xs">
+                    {activity.adaptations.map((adapt) => (
+                      <div key={adapt.grade} className="flex items-start gap-1.5">
+                        <span className="font-bold text-[#245B4A] min-w-14">{adapt.grade}:</span>
+                        <span className="text-[#4A554E] text-[11px] leading-relaxed">{adapt.instruction}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step By Step Instructions */}
+                <div className="space-y-1 pt-2 border-t border-[#F0F4F1]">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#68746B]">
+                    {t('activities.stepByStepGuide')}
+                  </span>
+                  <ol className="text-[11px] text-[#4A554E] space-y-1 list-decimal pl-4 leading-relaxed">
+                    {activity.steps.map((st, idx) => (
+                      <li key={idx}>{st}</li>
+                    ))}
+                  </ol>
                 </div>
               </div>
 
-              {/* Step By Step Instructions */}
-              <div className="space-y-1 pt-2 border-t border-[#F0F4F1]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#68746B]">
-                  Step-by-Step Classroom Guide
-                </span>
-                <ol className="text-[11px] text-[#4A554E] space-y-1 list-decimal pl-4 leading-relaxed">
-                  {activity.steps.map((st, idx) => (
-                    <li key={idx}>{st}</li>
-                  ))}
-                </ol>
+              {/* Bottom Action Footer */}
+              <div className="p-3.5 bg-[#FAFBF9] border-t border-[#E1E7E0] flex items-center justify-between">
+                <span className="text-[11px] text-[#68746B]">{t('activities.testedInRuralSchools')}</span>
+                <button
+                  onClick={() => setSelectedActivityForPlan(rawActivity)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#245B4A] hover:bg-[#194738] rounded-lg transition-colors shadow-2xs cursor-pointer"
+                >
+                  <CalendarPlus className="w-3.5 h-3.5" />
+                  <span>{t('activities.addToWeeklyPlan')}</span>
+                </button>
               </div>
             </div>
-
-            {/* Bottom Action Footer */}
-            <div className="p-3.5 bg-[#FAFBF9] border-t border-[#E1E7E0] flex items-center justify-between">
-              <span className="text-[11px] text-[#68746B]">Tested in multi-grade rural schools</span>
-              <button
-                onClick={() => setSelectedActivityForPlan(activity)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#245B4A] hover:bg-[#194738] rounded-lg transition-colors shadow-2xs"
-              >
-                <CalendarPlus className="w-3.5 h-3.5" />
-                <span>Add to Weekly Plan</span>
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Modal: Add to Weekly Plan */}
@@ -328,44 +331,44 @@ export const ActivitiesPage: React.FC = () => {
             <div className="p-4 bg-[#FAFBF9] border-b border-[#E1E7E0] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CalendarPlus className="w-4 h-4 text-[#245B4A]" />
-                <h3 className="font-bold text-sm text-[#202923]">Schedule Activity</h3>
+                <h3 className="font-bold text-sm text-[#202923]">{t('activities.scheduleActivity')}</h3>
               </div>
               <button
                 onClick={() => setSelectedActivityForPlan(null)}
-                className="text-xs text-[#68746B] hover:text-[#202923]"
+                className="text-xs text-[#68746B] hover:text-[#202923] cursor-pointer"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
 
             <div className="p-5 space-y-4 text-xs">
               <div>
-                <span className="text-[#68746B]">Activity:</span>
+                <span className="text-[#68746B]">{t('nav.activities')}:</span>
                 <div className="font-bold text-sm text-[#202923] mt-0.5">
-                  {selectedActivityForPlan.title}
+                  {localizeActivity(selectedActivityForPlan, i18n.language).title}
                 </div>
                 <div className="text-[11px] text-[#68746B]">
-                  Duration: {selectedActivityForPlan.durationMinutes} min · {selectedActivityForPlan.grades.join(', ')}
+                  {selectedActivityForPlan.durationMinutes}m · {selectedActivityForPlan.grades.map(g => localizeGrade(g, i18n.language)).join(', ')}
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-[#202923] mb-1">Select School Day</label>
+                <label className="block font-semibold text-[#202923] mb-1">{t('activities.selectSchoolDay')}</label>
                 <select
                   value={targetDay}
                   onChange={(e) => setTargetDay(e.target.value as any)}
                   className="w-full p-2 border border-[#E1E7E0] rounded-md bg-white font-medium text-xs"
                 >
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
+                  <option value="Monday">{t('common.days.monday')}</option>
+                  <option value="Tuesday">{t('common.days.tuesday')}</option>
+                  <option value="Wednesday">{t('common.days.wednesday')}</option>
+                  <option value="Thursday">{t('common.days.thursday')}</option>
+                  <option value="Friday">{t('common.days.friday')}</option>
                 </select>
               </div>
 
               <div>
-                <label className="block font-semibold text-[#202923] mb-1">Time Slot (approximate)</label>
+                <label className="block font-semibold text-[#202923] mb-1">{t('activities.timeSlotApprox')}</label>
                 <input
                   type="time"
                   value={targetTime}
@@ -375,22 +378,25 @@ export const ActivitiesPage: React.FC = () => {
               </div>
 
               <div className="p-3 bg-[#FAFBF9] rounded-lg border border-[#E1E7E0] text-[11px] text-[#4A554E]">
-                This activity will be added as a differentiated session on {targetDay} with tasks populated for {selectedActivityForPlan.grades.join(', ')}.
+                {t('activities.scheduleModalNote', {
+                  day: t(`common.days.${targetDay.toLowerCase()}` as any),
+                  grades: selectedActivityForPlan.grades.map(g => localizeGrade(g, i18n.language)).join(', ')
+                })}
               </div>
             </div>
 
             <div className="p-4 bg-[#FAFBF9] border-t border-[#E1E7E0] flex justify-end gap-2.5">
               <button
                 onClick={() => setSelectedActivityForPlan(null)}
-                className="px-3.5 py-1.5 text-xs text-[#4A554E]"
+                className="px-3.5 py-1.5 text-xs text-[#4A554E] cursor-pointer"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 onClick={handleConfirmAddToPlan}
-                className="px-4 py-1.5 text-xs font-semibold text-white bg-[#245B4A] hover:bg-[#194738] rounded-lg"
+                className="px-4 py-1.5 text-xs font-semibold text-white bg-[#245B4A] hover:bg-[#194738] rounded-lg cursor-pointer"
               >
-                Confirm & Add
+                {t('activities.confirmAndAdd')}
               </button>
             </div>
           </div>

@@ -99,10 +99,25 @@ How can I help you today? You can ask me to design a **shared multi-grade anchor
       id: 'welcome',
       sender: 'ai',
       text: welcomeText,
-      timestamp: 'Just now',
+      timestamp: t('common.justNow'),
       source: 'fallback'
     }
   ]);
+
+  useEffect(() => {
+    setMessages(prev => {
+      if (prev.length === 1 && prev[0].id === 'welcome') {
+        return [{
+          id: 'welcome',
+          sender: 'ai',
+          text: welcomeText,
+          timestamp: t('common.justNow'),
+          source: 'fallback'
+        }];
+      }
+      return prev;
+    });
+  }, [i18n.language, welcomeText, t]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -32,6 +32,9 @@
     "sourceAi": "AI",
     "sourceBuiltin": "अंतर्निहित",
     "sourceBuiltinDesc": "अंतर्निहित शिक्षण पद्धति इंजन",
+    "justNow": "अभी-अभी",
+    "allDurations": "सभी अवधियां",
+    "allMaterials": "सभी सामग्री",
     "statusApproved": "शिक्षक द्वारा स्वीकृत",
     "statusGenerated": "निर्मित",
     "statusDraft": "प्रारूप",
@@ -109,7 +112,10 @@
       "totalStudents": "कुल विद्यार्थी",
       "weakTopics": "प्राथमिक अंतराल (<55%)",
       "averageMastery": "कक्षा औसत दक्षता"
-    }
+    },
+    "periodsCount": "{{count}} कालांश",
+    "priorityGapsTitle": "कक्षाओं में प्राथमिक शिक्षण अंतराल",
+    "priorityGapsSubtitle": "बहु-कक्षा निरंतरता में चिन्हित मूल कारण"
   },
   "students": {
     "title": "विद्यार्थी रिकॉर्ड व प्रगति ट्रैकर",
@@ -185,7 +191,20 @@
     "views": {
       "weeklyOverview": "साप्ताहिक अवलोकन",
       "dailyDetail": "दैनिक विवरण"
-    }
+    },
+    "primaryWorkingArea": "मुख्य कार्य क्षेत्र",
+    "tagline": "एक कमरा। कई कक्षाएं। सभी के लिए व्यावहारिक योजना।",
+    "withinCapacity": "विद्यालय समय सीमा के भीतर",
+    "exceedsCapacity": "उपलब्ध समय से {{hours}} घंटे अधिक",
+    "rebalanceDurations": "अवधि संतुलित करें",
+    "hrsAvailable": "/ {{count}} घंटे उपलब्ध",
+    "printTitle": "RuralClass साप्ताहिक शिक्षण योजना",
+    "printedOn": "मुद्रण तिथि: {{date}}",
+    "teacherNotesLabel": "शिक्षक टिप्पणियां",
+    "planApprovedToast": "योजना शिक्षक द्वारा आधिकारिक रूप से स्वीकृत की गई!",
+    "planRebalancedToast": "शिक्षण समय सीमा में फिट होने के लिए अवधियां संतुलित की गईं।",
+    "sessionUpdatedToast": "सत्र सफलतापूर्वक अद्यतित किया गया।",
+    "sessionRemovedToast": "सत्र साप्ताहिक योजना से हटा दिया गया।"
   },
   "bridge": {
     "title": "संकल्पना सेतु मानचित्र",
@@ -200,7 +219,26 @@
       "foundation": "नींव स्तर (कक्षा 3)",
       "application": "अनुप्रयोग स्तर (कक्षा 4)",
       "synthesis": "संश्लेषण स्तर (कक्षा 5)"
-    }
+    },
+    "legend": "संकेतक",
+    "filterGrade": "कक्षा चुनें:",
+    "allConceptsMapped": "{{count}} संकल्पनाएं मानचित्रित",
+    "clickNodeGuidance": "कक्षाओं में अधिगम बाधा के मूल कारण को देखने के लिए किसी भी संकल्पना पर क्लिक करें।",
+    "nodePrereqRoot": "▲ आधारभूत मूल संकल्पना",
+    "nodeDownstream": "▼ अनुगामी संकल्पना",
+    "conceptNode": "संकल्पना सेतु नोड",
+    "conceptDefinition": "संकल्पना परिभाषा",
+    "bridgeSignificance": "बहु-कक्षा सेतु का महत्व",
+    "connectedConcepts": "जुड़ी हुई संकल्पनाएं",
+    "prerequisitesLabel": "पूर्व ज्ञान:",
+    "downstreamLabel": "अनुगामी संकल्पनाएं:",
+    "noPrereqFoundational": "प्रारंभिक आधार बिंदु (इस मानचित्र में कोई पूर्व ज्ञान शेष नहीं)",
+    "culminatingConcept": "इस सेतु मॉडल की चरम संकल्पना",
+    "suggestedMultiGradeAction": "सुझाई गई बहु-कक्षा गतिविधि",
+    "transferToPlannerDesc": "इस संकल्पना को कक्षा-वार कार्यों के साथ साप्ताहिक योजना में स्थानांतरित करता है।",
+    "selectNodePrompt": "पूर्व ज्ञान नींव की जांच करने और सेतु पाठ तैयार करने के लिए मानचित्र पर किसी नोड को चुनें।",
+    "multiGradeTeachingTip": "बहु-कक्षा शिक्षण सुझाव",
+    "teachingTipText": "जब कक्षा 5 दशमलव (42%) में कठिनाई महसूस करती है, तो दशमलव सूत्र दोहराने से लाभ नहीं होता। संकल्पना सेतु साबित करता है कि मूल कमजोरी कक्षा 3 के समान बंटवारे की समझ में है। सोमवार को कागज़ मोड़ने का साझा पाठ तीनों कक्षाओं के लिए उपयोगी सिद्ध होता है।"
   },
   "activities": {
     "title": "सुलभ शिक्षण गतिविधियां",
@@ -215,7 +253,30 @@
       "peerLearning": "सहपाठी अधिगम",
       "visualModel": "दृश्य मॉडल",
       "formativeCheck": "रचनात्मक जांच"
-    }
+    },
+    "filterActive": "कक्षा शिक्षण सामग्री फ़िल्टर सक्रिय",
+    "searchPlaceholder": "गतिविधि, विषय या सामग्री खोजें (उदा. कंकड़, कागज़, गुणा)...",
+    "onlyInventoryMaterials": "केवल विद्यालय में उपलब्ध सामग्री वाली गतिविधियां",
+    "filterBy": "फ़िल्टर करें:",
+    "durationQuick": "त्वरित (≤20 मिनट)",
+    "durationStandard": "मानक (25–30 मिनट)",
+    "durationExtended": "विस्तृत (>30 मिनट)",
+    "materialPaper": "कागज़",
+    "materialPebbles": "कंकड़ / पत्थर",
+    "materialBottleCaps": "बोतल के ढक्कन",
+    "materialSticks": "तीलियां / डंडियां",
+    "materialChalk": "श्यामपट्ट व चाक",
+    "showingActivitiesCount": "कुल {{total}} में से {{filtered}} गतिविधियां प्रदर्शित",
+    "requiredLowCostMaterials": "आवश्यक शून्य-लागत सामग्री",
+    "differentiatedAdaptations": "कक्षा-वार विभेदित रूपांतरण",
+    "stepByStepGuide": "चरणबद्ध कक्षा शिक्षण मार्गदर्शिका",
+    "testedInRuralSchools": "ग्रामीण बहु-कक्षा विद्यालयों में परीक्षित",
+    "addToWeeklyPlan": "साप्ताहिक योजना में जोड़ें",
+    "scheduleActivity": "गतिविधि निर्धारित करें",
+    "selectSchoolDay": "विद्यालय दिवस चुनें",
+    "timeSlotApprox": "समय स्लॉट (अनुमानित)",
+    "scheduleModalNote": "यह गतिविधि {{day}} को {{grades}} के लिए कार्यों के साथ जोड़ी जाएगी।",
+    "confirmAndAdd": "पुष्टि करें और जोड़ें"
   },
   "gaps": {
     "title": "अधिगम अंतराल विश्लेषण",
@@ -241,7 +302,15 @@
     "savePreferences": "प्राथमिकताएं सहेजें",
     "resetAll": "डेमो डेटा रीसेट करें",
     "resetSuccess": "सभी कक्षा डेटा प्रारंभिक स्थिति में रीसेट हो गया।",
-    "saveSuccess": "सेटिंग्स सफलतापूर्वक सहेजी गईं।"
+    "saveSuccess": "सेटिंग्स सफलतापूर्वक सहेजी गईं।",
+    "languageSectionTitle": "Language / மொழி / भाषा",
+    "languageSubtitle": "अपनी प्राथमिक कक्षा भाषा चुनें। संपूर्ण इंटरफ़ेस, बहु-कक्षा पाठ्यक्रम और AI मार्गदर्शन तुरंत बदल जाएंगे।",
+    "languageChangedToast": "भाषा सफलतापूर्वक बदल दी गई।",
+    "langEnglishTag": "Standard English",
+    "langTamilTag": "तमिलनाडु पाठ्यक्रम",
+    "langHindiTag": "एनसीईआरटी पाठ्यक्रम",
+    "demoNameHint": "काल्पनिक डेमो नाम",
+    "resetModalDesc": "यह सभी विषयों, दक्षता स्तरों, शिक्षण सामग्री व स्वीकृत योजनाओं को डिफ़ॉल्ट डेमो स्थिति में रीसेट कर देगा। आपके बदलाव हटा दिए जाएंगे।"
   },
   "ai": {
     "title": "RuralClass AI शिक्षण कोच",
